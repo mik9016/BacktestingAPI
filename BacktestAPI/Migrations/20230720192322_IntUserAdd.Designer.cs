@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BacktestAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230719100631_ChangeInstrumentName")]
-    partial class ChangeInstrumentName
+    [Migration("20230720192322_IntUserAdd")]
+    partial class IntUserAdd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,31 @@ namespace BacktestAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Trades");
+                });
+
+            modelBuilder.Entity("BacktestAPI.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

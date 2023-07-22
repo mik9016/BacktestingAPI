@@ -1,9 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BacktestAPI.Models
 {
 	public class Trade
 	{
-		public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
 		public string Ratio { get; set; } = string.Empty;
 		public float EntryInDollars { get; set; }
 		public float EntryInPercents { get; set; }

@@ -1,5 +1,10 @@
-﻿using BacktestAPI.Data;
+﻿using System.Text;
+using BacktestAPI.Data;
+using BacktestAPI.Services.AuthService;
 using BacktestAPI.Services.TradeService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +16,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //add services
 builder.Services.AddScoped<ITradeService, TradeService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 // Register DB
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                builder.Configuration.GetSection("AppSettings:Token").Value!)) // Instead of hardcoded var in settings use something from azure
+};
+});
 
 var app = builder.Build();
 
@@ -25,7 +43,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthentication();
+
+app.UseAuthorization();// add
 
 app.MapControllers();
 

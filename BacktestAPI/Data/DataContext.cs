@@ -23,6 +23,7 @@ namespace BacktestAPI.Data
         }
 
         public DbSet<Trade> Trades { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
 

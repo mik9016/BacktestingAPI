@@ -25,6 +25,13 @@ namespace BacktestAPI.Services.TradeService
 
         public async Task<List<Trade>> AddTrade(Trade trade)
         {
+            // Fetch the last user from the database
+            var lastTrade = _context.Trades.OrderByDescending(trade => trade.Id).FirstOrDefault();
+
+            // Increment the ID for the new user
+            int nextId = (lastTrade != null) ? lastTrade.Id + 1 : 1;
+            trade.Id = nextId;
+
             _context.Trades.Add(trade);
             await _context.SaveChangesAsync();
             return await _context.Trades.ToListAsync();

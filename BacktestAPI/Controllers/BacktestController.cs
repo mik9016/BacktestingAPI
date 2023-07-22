@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BacktestAPI.Models;
 using BacktestAPI.Services.CalculationService;
 using BacktestAPI.Services.TradeService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,6 +14,7 @@ namespace BacktestAPI
 {
     [ApiController]
     [Route("api/backtest")]
+    [Authorize]
     public class BacktestController : ControllerBase
     {
         private readonly ITradeService _tradeService;

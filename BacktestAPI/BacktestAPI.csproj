@@ -18,12 +18,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.32.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Services\CalculationService\" />
+    <None Remove="Services\AuthService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\CalculationService\" />
+    <Folder Include="Services\AuthService\" />
   </ItemGroup>
 </Project>

@@ -18,7 +18,8 @@ namespace BacktestAPI.Services.AuthService
 		{
 			_context = context;
 			_configuration = configuration;
-		}
+
+        }
 
         public async Task<ActionResult<User>> Register(UserDto request)
         {
@@ -58,7 +59,9 @@ namespace BacktestAPI.Services.AuthService
 
         public async Task<User> Login(UserDto request)
         {
-            var userDB = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            var userDB = await _context.Users.Include(u => u.Trades)
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
+                
 
             if (userDB is null)
             {
@@ -72,6 +75,7 @@ namespace BacktestAPI.Services.AuthService
 
             return userDB;
         }
+
 
         public string CreateToken(User user)
         {
@@ -91,7 +95,7 @@ namespace BacktestAPI.Services.AuthService
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(
                     claims: claims,
-                    expires: DateTime.Now.AddDays(1),
+                    expires: DateTime.Now.AddHours(4),
                     signingCredentials: creds
                 );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);

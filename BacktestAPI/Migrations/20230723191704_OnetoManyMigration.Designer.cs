@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BacktestAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230720183227_floatadduser")]
-    partial class floatadduser
+    [Migration("20230723191704_OnetoManyMigration")]
+    partial class OnetoManyMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,14 +61,18 @@ namespace BacktestAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Trades");
                 });
 
             modelBuilder.Entity("BacktestAPI.User", b =>
                 {
-                    b.Property<float>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("real");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -85,6 +89,22 @@ namespace BacktestAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BacktestAPI.Models.Trade", b =>
+                {
+                    b.HasOne("BacktestAPI.User", "User")
+                        .WithMany("Trades")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BacktestAPI.User", b =>
+                {
+                    b.Navigation("Trades");
                 });
 #pragma warning restore 612, 618
         }

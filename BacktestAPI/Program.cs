@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 //add services
 builder.Services.AddScoped<ITradeService, TradeService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpContextAccessor();
 // Register DB
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

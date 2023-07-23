@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Threading.Tasks;
+﻿using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using BacktestAPI.Data;
-using BacktestAPI.Models;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.IdentityModel.Tokens.Jwt;
+
 using BacktestAPI.Services.AuthService;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -59,16 +48,25 @@ namespace BacktestAPI
 
         public async Task<ActionResult<User>> Login(UserDto request)
         {
-            var result = await _auth.Login(request);
+            var userDB = await _auth.Login(request);
 
-            if(result is null)
+            if(userDB is null)
             {
                 return BadRequest("Credentials are wrong!");
             }
 
-            string token = _auth.CreateToken(result);
+            string token = _auth.CreateToken(userDB);
 
-            return Ok(token);
+            var user = new
+            {
+                id = userDB.Id,
+                email = userDB.Email,
+                username = userDB.Username,
+                trades = userDB.Trades
+            };
+            
+
+            return Ok(new {token, user });
            
         }
 

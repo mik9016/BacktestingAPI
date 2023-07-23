@@ -58,6 +58,8 @@ namespace BacktestAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Trades");
                 });
 
@@ -84,6 +86,22 @@ namespace BacktestAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BacktestAPI.Models.Trade", b =>
+                {
+                    b.HasOne("BacktestAPI.User", "User")
+                        .WithMany("Trades")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BacktestAPI.User", b =>
+                {
+                    b.Navigation("Trades");
                 });
 #pragma warning restore 612, 618
         }

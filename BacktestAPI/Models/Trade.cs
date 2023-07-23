@@ -6,8 +6,7 @@ namespace BacktestAPI.Models
 {
 	public class Trade
 	{
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key]
         public int Id { get; set; }
 
 		public string Ratio { get; set; } = string.Empty;
@@ -17,7 +16,7 @@ namespace BacktestAPI.Models
 		public float ResultInPercents { get; set; }
 		public string InstrumentName { get; set; } = string.Empty;
 		public int UserId { get; set; }
-		public string StrategyName { get; set; } = string.Empty;
+        public string StrategyName { get; set; } = string.Empty;
 
 
 

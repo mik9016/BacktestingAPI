@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BacktestAPI.Data;
 
 using BacktestAPI.Services.AuthService;
+using BacktestAPI.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,14 +13,12 @@ namespace BacktestAPI
     [ApiController]
     public class Auth : ControllerBase
     {
-        private readonly DataContext _context;
         private readonly IAuthService _auth;
 
 
 
-        public Auth(DataContext context, IAuthService auth)
+        public Auth( IAuthService auth)
         {
-            _context = context;
             _auth = auth;
         }
 
@@ -46,7 +45,7 @@ namespace BacktestAPI
 
         [HttpPost("login")]
 
-        public async Task<ActionResult<User>> Login(UserDto request)
+        public async Task<ActionResult<User>> Login(LoginUserDto request)
         {
             var userDB = await _auth.Login(request);
 

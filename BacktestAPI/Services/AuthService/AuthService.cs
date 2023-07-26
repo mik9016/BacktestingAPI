@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using BacktestAPI.Data;
+using BacktestAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -57,7 +57,7 @@ namespace BacktestAPI.Services.AuthService
             return user;
         }
 
-        public async Task<User> Login(UserDto request)
+        public async Task<User> Login(LoginUserDto request)
         {
             var userDB = await _context.Users.Include(u => u.Trades)
                 .FirstOrDefaultAsync(u => u.Email == request.Email);
